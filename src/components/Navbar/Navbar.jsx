@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import './Navbar.css'
 import logo from '../../assets/logo.png'
 import arrow_icon from '../../assets/arrow_icon.png'
-import { coinContext } from '../../context/CoinContext'
+import { CoinContext } from '../../context/CoinContext'
 
 const Navbar = () => {
-    const {setCurrency} = useContext(coinContext);
+    const {setCurrency} = useContext(CoinContext);
 
     const currencyHandler = (event) => {
         switch (event.target.value){
@@ -19,6 +19,7 @@ const Navbar = () => {
             }
             case "inr": {
                 setCurrency({name:"inr" , symbol: "₹"})
+                break;
             }
             default: {
                 setCurrency({name: "usd" , symbol: "$"})

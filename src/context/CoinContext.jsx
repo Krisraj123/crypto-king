@@ -1,8 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 
-export const coinContext = createContext();
+export const CoinContext = createContext();
 
-const coinContextProvider = (props) => {
+const CoinContextProvider = (props) => {
 
     const [allCoin, setAllCoin] = useState([]);
     const [currency , setCurrency] = useState({
@@ -24,16 +24,17 @@ const coinContextProvider = (props) => {
 
     useEffect(()=> {
         fetchAllCoin();
+        console.log(currency.name,currency.symbol);
     },[currency])
 
     const contextValue = {
         allCoin, currency, setCurrency
     }
     return (
-        <coinContext.Provider value={contextValue}>
+        <CoinContext.Provider value={contextValue}>
             {props.children}
-        </coinContext.Provider>
+        </CoinContext.Provider>
     )
 }
 
-export default coinContextProvider;
+export default CoinContextProvider;
