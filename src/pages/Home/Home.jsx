@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './Home.css'
 import { useContext } from 'react'
 import { CoinContext } from '../../context/CoinContext'
+import {Link} from 'react-router-dom';
+
+
 
 const Home = () => {
   const {allCoin, currency} = useContext(CoinContext);
@@ -10,7 +13,20 @@ const Home = () => {
 
   const inputHandler = (event) => {
     setInput(event.target.value);
+    if(event.target.value === ""){
+        setDisplayCoin(allCoin);
+    }
   }
+  const searchHandler = async (event) => {
+    event.preventDefault();
+    const coins = await allCoin.filter((item) => {
+        return item.name.toLowerCase().includes(input.toLowerCase());
+    })
+
+    setDisplayCoin(coins);
+
+  }
+
 
   useEffect(()=> {
     setDisplayCoin(allCoin);
@@ -24,8 +40,19 @@ const Home = () => {
         <div className="hero">
             <h1>Largest <br/> Crypto MarketPlace</h1>
             <p>Welcome to the World's largest cryptocurrency MarketPlace.Sign up to explore more about cryptos.</p>
-            <form>
-                <input onChange={inputHandler} value={input} type="text " placeholder='Search Crypto..' required />
+            <form onSubmit={searchHandler}>
+                <input onChange={inputHandler} list="coinlist" value={input} type="text " placeholder='Search Crypto..' required />
+                <datalist id="coinlist">
+                    {allCoin.map((item,index) => (
+                        <option key="index" value={item.name}></option>
+                    ))}
+                </datalist>
+
+
+
+
+
+
                 <button type='submit'>Search</button>
             </form>
         </div>
@@ -39,7 +66,7 @@ const Home = () => {
             </div>
             {
                 displayCoin.slice(0,10).map((item,index)=> (
-                    <div className="table-layout" key={index}>
+                    <Link to={`/coin/${item.id}`} className="table-layout" key={index}>
                         <p>{item.market_cap_rank}</p>
                         <div>
                             <img src={item.image} alt={item.name} />
@@ -55,7 +82,7 @@ const Home = () => {
                         <p className='market-cap'>
                             {currency.symbol} {item.market_cap.toLocaleString()}
                         </p>
-                    </div>
+                    </Link>
                 ))
             }
 
